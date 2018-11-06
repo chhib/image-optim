@@ -9,7 +9,7 @@ const dev = process.env.NODE_ENV !== 'production'
 const app = next({ dev })
 const handle = app.getRequestHandler()
 
-// Optimize file
+// Optimize files on server
 const fs = require('fs')
 const lqip = require('lqip');
 const file = "./static/jarand-lokeland-142660-unsplash.jpg";
@@ -19,15 +19,16 @@ lqip.base64(file).then(result => {
     console.log(err);
   });
 });
-
 const sqip = require('sqip');
-const result =  sqip({
+const result = sqip({
     filename: file,
     numberOfPrimitives: 10
 });
 require("fs").writeFile("./static/jarand-lokeland-142660-unsplash-sqip.svg", result.svg_base64encoded, 'base64', function(err) {
    console.log(err);
 });
+
+
 
 app.prepare().then(() => {
   createServer((req, res) => {
@@ -48,11 +49,3 @@ app.prepare().then(() => {
     console.log('> Ready on http://localhost:3000')
   })
 })
-
-
-// if (typeof window === 'undefined') {
-//   const lqip = require('lqip');
-//   const fs = require('fs')
-
-//   console.log('server only')
-// }
